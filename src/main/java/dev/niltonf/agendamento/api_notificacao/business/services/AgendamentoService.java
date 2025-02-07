@@ -3,6 +3,7 @@ package dev.niltonf.agendamento.api_notificacao.business.services;
 import dev.niltonf.agendamento.api_notificacao.controller.dto.AgendamentoRequestDto;
 import dev.niltonf.agendamento.api_notificacao.controller.dto.AgendamentoResponseDto;
 import dev.niltonf.agendamento.api_notificacao.infrastructure.entities.Agendamento;
+import dev.niltonf.agendamento.api_notificacao.infrastructure.exception.NotFoundException;
 import dev.niltonf.agendamento.api_notificacao.infrastructure.repositories.AgendamentoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,19 @@ public class AgendamentoService {
 
 
 
+    }
+
+    public AgendamentoResponseDto getAgendamento(Long id){
+
+        Agendamento agendamento = agendamentoRepository.findById(id)
+                .orElseThrow(()->  new NotFoundException("Agendamento não existe"));
+
+        return new AgendamentoResponseDto(agendamento.getId(),
+                agendamento.getEmail(),
+                agendamento.getContacto(),
+                agendamento.getMensagem(),
+                agendamento.getStatusNotificacao()
+        );
     }
 
 
